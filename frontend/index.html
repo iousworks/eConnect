@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eConnect - Education Management Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 900px;
+            min-height: 600px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .api-status {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-left: 4px solid #28a745;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: #dc3545;
+            border-radius: 50%;
+            margin-right: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        .status-indicator.online {
+            background: #28a745;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .tab {
+            background: none;
+            border: none;
+            padding: 15px 25px;
+            cursor: pointer;
+            font-size: 16px;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .tab:hover {
+            background: #f8f9fa;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .response-area {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .response-area pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+        }
+
+        .success {
+            color: #28a745;
+        }
+
+        .error {
+            color: #dc3545;
+        }
+
+        .auth-info {
+            background: #e7f3ff;
+            border: 1px solid #b8daff;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .token-display {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 12px;
+            word-break: break-all;
+            margin-top: 10px;
+        }
+
+        .dashboard-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .dashboard-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>eConnect</h1>
+            <p>Education Management Platform - API Interface</p>
+        </div>
+
+        <div class="api-status">
+            <span class="status-indicator" id="statusIndicator"></span>
+            <span id="statusText">Checking API status...</span>
+        </div>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('auth')">Authentication</button>
+            <button class="tab" onclick="showTab('dashboard')">Dashboard</button>
+            <button class="tab" onclick="showTab('users')">Users</button>
+            <button class="tab" onclick="showTab('test')">API Testing</button>
+        </div>
+
+        <!-- Authentication Tab -->
+        <div id="auth" class="tab-content active">
+            <div class="auth-info" id="authInfo">
+                <strong>Not logged in</strong> - Please register or login to access protected features.
+            </div>
+
+            <h3>Register New User</h3>
+            <form id="registerForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input type="text" id="regFirstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <input type="text" id="regLastName" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="regEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Role</label>
+                        <select id="regRole" required onchange="toggleRoleFields()">
+                            <option value="">Select Role</option>
+                            <option value="student">Student</option>
+                            <option value="educator">Educator</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="regPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Institution</label>
+                        <input type="text" id="regInstitution">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group" id="gradeField" style="display: none;">
+                        <label>Grade (Students only)</label>
+                        <input type="text" id="regGrade" placeholder="e.g., Grade 10">
+                    </div>
+                    <div class="form-group" id="subjectField" style="display: none;">
+                        <label>Subject (Educators only)</label>
+                        <input type="text" id="regSubject" placeholder="e.g., Mathematics">
+                    </div>
+                </div>
+                <button type="submit" class="btn">Register</button>
+            </form>
+
+            <h3 style="margin-top: 40px;">Login</h3>
+            <form id="loginForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="loginEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="loginPassword" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn">Login</button>
+                <button type="button" class="btn btn-secondary" onclick="logout()">Logout</button>
+            </form>
+
+            <div class="response-area" id="authResponse"></div>
+        </div>
+
+        <!-- Dashboard Tab -->
+        <div id="dashboard" class="tab-content">
+            <div class="dashboard-section">
+                <h3>Dashboard Overview</h3>
+                <div id="dashboardContent">
+                    <p>Please login to view your dashboard.</p>
+                </div>
+                <button class="btn" onclick="loadDashboard()">Load Dashboard</button>
+                <button class="btn btn-secondary" onclick="loadStats()">Load Statistics</button>
+            </div>
+            <div class="response-area" id="dashboardResponse"></div>
+        </div>
+
+        <!-- Users Tab -->
+        <div id="users" class="tab-content">
+            <div class="form-group">
+                <label>Search Users</label>
+                <input type="text" id="searchQuery" placeholder="Search by name, email, or institution">
+                <button class="btn" onclick="searchUsers()" style="margin-top: 10px;">Search</button>
+            </div>
+
+            <div class="form-group">
+                <button class="btn" onclick="getProfile()">Get My Profile</button>
+                <button class="btn btn-secondary" onclick="getAllUsers()">Get All Users</button>
+            </div>
+
+            <div class="response-area" id="usersResponse"></div>
+        </div>
+
+        <!-- API Testing Tab -->
+        <div id="test" class="tab-content">
+            <h3>API Health Check</h3>
+            <button class="btn" onclick="checkHealth()">Check API Health</button>
+            <button class="btn btn-secondary" onclick="verifyToken()">Verify Token</button>
+
+            <h3 style="margin-top: 30px;">Custom API Request</h3>
+            <div class="form-group">
+                <label>Method</label>
+                <select id="customMethod">
+                    <option value="GET">GET</option>
+                    <option value="POST">POST</option>
+                    <option value="PUT">PUT</option>
+                    <option value="DELETE">DELETE</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Endpoint</label>
+                <input type="text" id="customEndpoint" placeholder="/api/health">
+            </div>
+            <div class="form-group">
+                <label>Request Body (JSON)</label>
+                <textarea id="customBody" rows="4" style="width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 8px;"></textarea>
+            </div>
+            <button class="btn" onclick="makeCustomRequest()">Send Request</button>
+
+            <div class="response-area" id="testResponse"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:3000/api';
+        let authToken = localStorage.getItem('econnect_token');
+        let currentUser = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            checkApiStatus();
+            updateAuthInfo();
+            loadTokenFromStorage();
+        });
+
+        function showTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => content.classList.remove('active'));
+
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+
+        function toggleRoleFields() {
+            const role = document.getElementById('regRole').value;
+            const gradeField = document.getElementById('gradeField');
+            const subjectField = document.getElementById('subjectField');
+
+            if (role === 'student') {
+                gradeField.style.display = 'block';
+                subjectField.style.display = 'none';
+            } else if (role === 'educator') {
+                gradeField.style.display = 'none';
+                subjectField.style.display = 'block';
+            } else {
+                gradeField.style.display = 'none';
+                subjectField.style.display = 'none';
+            }
+        }
+
+        async function checkApiStatus() {
+            try {
+                const response = await fetch(`${API_BASE}/health`);
+                const data = await response.json();
+                
+                document.getElementById('statusIndicator').classList.add('online');
+                document.getElementById('statusText').innerHTML = 
+                    `<strong>API Online</strong> - ${data.message || 'eConnect API is running'}`;
+            } catch (error) {
+                document.getElementById('statusIndicator').classList.remove('online');
+                document.getElementById('statusText').innerHTML = 
+                    '<strong>API Offline</strong> - Could not connect to backend server';
+            }
+        }
+
+        function updateAuthInfo() {
+            const authInfo = document.getElementById('authInfo');
+            if (authToken && currentUser) {
+                authInfo.innerHTML = `
+                    <strong>Logged in as:</strong> ${currentUser.firstName} ${currentUser.lastName} (${currentUser.role})
+                    <div class="token-display">Token: ${authToken.substring(0, 50)}...</div>
+                `;
+            } else {
+                authInfo.innerHTML = '<strong>Not logged in</strong> - Please register or login to access protected features.';
+            }
+        }
+
+        function loadTokenFromStorage() {
+            if (authToken) {
+                verifyToken();
+            }
+        }
+
+        // Authentication Functions
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                firstName: document.getElementById('regFirstName').value,
+                lastName: document.getElementById('regLastName').value,
+                email: document.getElementById('regEmail').value,
+                password: document.getElementById('regPassword').value,
+                role: document.getElementById('regRole').value,
+                institution: document.getElementById('regInstitution').value
+            };
+
+            if (formData.role === 'student') {
+                formData.grade = document.getElementById('regGrade').value;
+            } else if (formData.role === 'educator') {
+                formData.subject = document.getElementById('regSubject').value;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/auth/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+                displayResponse('authResponse', data, response.ok);
+
+                if (response.ok) {
+                    authToken = data.token;
+                    currentUser = data.user;
+                    localStorage.setItem('econnect_token', authToken);
+                    updateAuthInfo();
+                    document.getElementById('registerForm').reset();
+                }
+            } catch (error) {
+                displayResponse('authResponse', { error: 'Network error', details: error.message }, false);
+            }
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                email: document.getElementById('loginEmail').value,
+                password: document.getElementById('loginPassword').value
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+                displayResponse('authResponse', data, response.ok);
+
+                if (response.ok) {
+                    authToken = data.token;
+                    currentUser = data.user;
+                    localStorage.setItem('econnect_token', authToken);
+                    updateAuthInfo();
+                    document.getElementById('loginForm').reset();
+                }
+            } catch (error) {
+                displayResponse('authResponse', { error: 'Network error', details: error.message }, false);
+            }
+        });
+
+        function logout() {
+            authToken = null;
+            currentUser = null;
+            localStorage.removeItem('econnect_token');
+            updateAuthInfo();
+            displayResponse('authResponse', { message: 'Logged out successfully' }, true);
+        }
+
+        async function verifyToken() {
+            if (!authToken) {
+                displayResponse('testResponse', { error: 'No token available' }, false);
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/auth/verify`, {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+
+                const data = await response.json();
+                displayResponse('testResponse', data, response.ok);
+
+                if (response.ok) {
+                    currentUser = data.user;
+                    updateAuthInfo();
+                } else {
+                    logout();
+                }
+            } catch (error) {
+                displayResponse('testResponse', { error: 'Network error', details: error.message }, false);
+            }
+        }
+
+        // Dashboard Functions
+        async function loadDashboard() {
+            if (!authToken) {
+                displayResponse('dashboardResponse', { error: 'Please login first' }, false);
+                return;
+            }
+
+            const endpoint = currentUser?.role === 'student' ? '/dashboard/student' : '/dashboard/educator';
+
+            try {
+                const response = await fetch(`${API_BASE}${endpoint}`, {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+
+                const data = await response.json();
+                displayResponse('dashboardResponse', data, response.ok);
+
+                if (response.ok) {
+                    displayDashboardData(data);
+                }
+            } catch (error) {
+                displayResponse('dashboardResponse', { error: 'Network error', details: error.message }, false);
+            }
+        }
+
+        async function loadStats() {
+            if (!authToken) {
+                displayResponse('dashboardResponse', { error: 'Please login first' }, false);
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/dashboard/stats`, {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+
+                const data = await response.json();
+                displayResponse('dashboardResponse', data, response.ok);
+            } catch (error) {
+                displayResponse('dashboardResponse', { error: 'Network error', details: error.message }, false);
+            }
+        }
+
+        function displayDashboardData(data) {
+            const dashboardContent = document.getElementById('dashboardContent');
+            let html = '';
+
+            if (data.statistics) {
+                html += '<div class="stats-grid">';
+                Object.entries(data.statistics).forEach(([key, value]) => {
+                    if (typeof value === 'number') {
+                        html += `
+                            <div class="stat-card">
+                                <div class="stat-number">${value}</div>
+                                <div class="stat-label">${key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}</div>
+                            </div>
+                        `;
+                    }
+                });
+                html += '</div>';
+            }
+
+            dashboardContent.innerHTML = html || '<p>Dashboard data loaded successfully. Check the response area below for details.</p>';
+        }
+
+        // User Functions
+        async function getProfile() {
+            if (!authToken) {
+                displayResponse('usersResponse', { error: 'Please login first' }, false);
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/users/profile`, {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+
+                const data = await response.json();
+                displayResponse('usersResponse', data, response.ok);
+            } catch (error) {
+                displayResponse('usersResponse', { error: 'Network error', details: error.message }, false);
+            }
+        }
+
+        async function getAllUsers() {
+            if (!authToken) {
+                displayResponse('usersResponse', { error: 'Please login first' }, false);
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/users`, {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+
+                const data = await response.json();
+                displayResponse('usersResponse', data, response.ok);
+            } catch (error) {
+                displayResponse('usersResponse', { error: 'Network error', details: error.message }, false);
+            }
+        }
+
+        async function searchUsers() {
+            const query = document.getElementById('searchQuery').value.trim();
+            if (!query) {
+                displayResponse('usersResponse', { error: 'Please enter a search query' }, false);
+                return;
+            }
+
+            if (!authToken) {
+                displayResponse('usersResponse', { error: 'Please login first' }, false);
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/users/search/${encodeURIComponent(query)}`, {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+
+                const data = await response.json();
+                displayResponse('usersResponse', data, response.ok);
+            } catch (error) {
+                displayResponse('usersResponse', { error: 'Network error', details: error.message }, false);
+            }
+        }
+
+        // Test Functions
+        async function checkHealth() {
+            try {
+                const response = await fetch(`${API_BASE}/health`);
+                const data = await response.json();
+                displayResponse('testResponse', data, response.ok);
+            } catch (error) {
+                displayResponse('testResponse', { error: 'Network error', details: error.message }, false);
+            }
+        }
+
+        async function makeCustomRequest() {
+            const method = document.getElementById('customMethod').value;
+            const endpoint = document.getElementById('customEndpoint').value;
+            const body = document.getElementById('customBody').value;
+
+            if (!endpoint) {
+                displayResponse('testResponse', { error: 'Please enter an endpoint' }, false);
+                return;
+            }
+
+            const options = {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+
+            if (authToken) {
+                options.headers['Authorization'] = `Bearer ${authToken}`;
+            }
+
+            if (body && (method === 'POST' || method === 'PUT')) {
+                try {
+                    JSON.parse(body); // Validate JSON
+                    options.body = body;
+                } catch (error) {
+                    displayResponse('testResponse', { error: 'Invalid JSON in request body' }, false);
+                    return;
+                }
+            }
+
+            try {
+                const url = endpoint.startsWith('/') ? `${API_BASE}${endpoint}` : `${API_BASE}/${endpoint}`;
+                const response = await fetch(url, options);
+                const data = await response.json();
+                displayResponse('testResponse', data, response.ok);
+            } catch (error) {
+                displayResponse('testResponse', { error: 'Network error', details: error.message }, false);
+            }
+        }
+
+        function displayResponse(elementId, data, isSuccess) {
+            const element = document.getElementById(elementId);
+            const className = isSuccess ? 'success' : 'error';
+            const timestamp = new Date().toLocaleTimeString();
+            
+            element.innerHTML = `
+                <div class="${className}">
+                    <strong>[${timestamp}] ${isSuccess ? 'SUCCESS' : 'ERROR'}</strong>
+                </div>
+                <pre>${JSON.stringify(data, null, 2)}</pre>
+            `;
+            element.scrollTop = element.scrollHeight;
+        }
+    </script>
+</body>
+</html>
