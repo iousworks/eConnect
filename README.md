@@ -2,6 +2,8 @@
 
 A modern, full-stack education management platform built with Next.js, React, and MongoDB. Designed for scalability, accessibility, and performance.
 
+**🚀 Live Demo:** [https://econnect-psi.vercel.app/](https://econnect-psi.vercel.app/)
+
 ## Overview
 
 eConnect is a comprehensive education management system that provides secure user authentication, responsive design, and real-time API capabilities. Built with modern web technologies and best practices for performance and SEO.
