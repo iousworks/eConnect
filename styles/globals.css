@@ -8,7 +8,7 @@
   }
   
   body {
-    @apply bg-gradient-to-br from-primary-500 to-secondary-500 min-h-screen;
+    @apply bg-white min-h-screen;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
   }
 }

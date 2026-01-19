@@ -2,7 +2,7 @@
 
 A modern, full-stack education management platform built with Next.js, React, and MongoDB. Designed for scalability, accessibility, and performance.
 
-**🚀 Live Demo:** [https://econnect-psi.vercel.app/](https://econnect-psi.vercel.app/)
+**Live Demo:** [https://econnect-psi.vercel.app/](https://econnect-psi.vercel.app/)
 
 ## Overview
 
