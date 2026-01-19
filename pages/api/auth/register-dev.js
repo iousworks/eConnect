@@ -1,5 +1,18 @@
-import { generateToken } from '../../../lib/auth'
-import { validateRegistrationData, sanitizeString } from '../../../lib/validation'
+// Simple JWT generation for development
+function generateToken(userId) {
+  const payload = {
+    userId,
+    iat: Date.now()
+  }
+  // Simple base64 encoding for development (not secure for production)
+  return Buffer.from(JSON.stringify(payload)).toString('base64')
+}
+
+// Simple sanitization function for development
+function sanitizeString(str) {
+  if (!str || typeof str !== 'string') return ''
+  return str.trim().replace(/[<>]/g, '')
+}
 
 // In-memory storage for development (data will be lost on server restart)
 let users = []
