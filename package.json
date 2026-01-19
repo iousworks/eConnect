@@ -1,0 +1,43 @@
+{
+  "name": "econnect",
+  "version": "1.0.0",
+  "description": "eConnect - Education Management Platform",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "export": "next export"
+  },
+  "dependencies": {
+    "next": "^14.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "mongoose": "^7.5.0",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "axios": "^1.5.0",
+    "framer-motion": "^10.16.4",
+    "lucide-react": "^0.294.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "eslint": "^8.51.0",
+    "eslint-config-next": "^14.0.0",
+    "postcss": "^8.4.31",
+    "tailwindcss": "^3.3.5",
+    "autoprefixer": "^10.4.16"
+  },
+  "keywords": [
+    "education",
+    "management",
+    "nextjs",
+    "react",
+    "tailwind"
+  ],
+  "author": "Jenny M. Subrastas",
+  "license": "MIT"
+}

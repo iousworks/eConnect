@@ -1,0 +1,1 @@
+# Robots.txt for eConnect Education Platform\n# https://econnect.vercel.app\n\nUser-agent: *\nAllow: /\nDisallow: /api/\nDisallow: /dashboard\nDisallow: /_next/\nDisallow: /admin/\n\n# Sitemaps\nSitemap: https://econnect.vercel.app/sitemap.xml\nSitemap: https://econnect.vercel.app/sitemap-pages.xml\n\n# Crawl-delay for respectful crawling\nCrawl-delay: 1

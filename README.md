@@ -1,23 +1,75 @@
-# eConnect - Offline Education Management Suite
+# eConnect - Education Management Platform
 
 ![eConnect Logo](https://img.shields.io/badge/eConnect-Education%20Platform-blue)
-![Node.js](https://img.shields.io/badge/Node.js-20.x-green)
-![Express](https://img.shields.io/badge/Express-4.x-lightgrey)
+![Next.js](https://img.shields.io/badge/Next.js-14.x-black)
+![React](https://img.shields.io/badge/React-18.x-blue)
 ![MongoDB](https://img.shields.io/badge/MongoDB-7.x-green)
-![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow)
+![Tailwind](https://img.shields.io/badge/Tailwind-3.x-blue)
 
-An offline-first education management platform designed to bridge the digital divide in education. eConnect provides comprehensive tools for students, educators, and administrators to manage educational content, track progress, and facilitate learning even without internet connectivity.
+A modern, full-stack education management platform built with Next.js, React, and MongoDB.
 
-## 🚀 Features
+## ✨ Features
 
-### For Students
-- **Profile Management**: Complete student profiles with academic tracking
-- **Course Enrollment**: Easy course discovery and enrollment system
-- **Progress Tracking**: Real-time academic progress monitoring
-- **Offline Learning**: Download content for offline study
-- **Interactive Dashboard**: Personalized learning dashboard
+- **🔐 Authentication & Authorization**: Secure user registration and login with JWT
+- **📱 Responsive Design**: Mobile-first design that works on all devices
+- **♿ Accessibility**: WCAG 2.1 AA compliant with screen reader support
+- **🚀 Performance**: Optimized with lazy loading, code splitting, and caching
+- **🎨 Modern UI**: Beautiful interface with Tailwind CSS and Framer Motion
+- **📊 Dashboard**: Comprehensive admin and user dashboards
+- **🔄 Real-time API Testing**: Built-in API testing interface
+- **🌐 SEO Optimized**: Server-side rendering and meta optimization
 
-### For Educators
+## 🛠️ Tech Stack
+
+### Frontend
+- **Next.js 14** - React framework with SSR/SSG
+- **React 18** - UI library with hooks and context
+- **Tailwind CSS** - Utility-first CSS framework
+- **Framer Motion** - Animation library
+- **Lucide React** - Icon library
+
+### Backend
+- **Next.js API Routes** - Serverless API endpoints
+- **MongoDB** - NoSQL database
+- **Mongoose** - MongoDB object modeling
+- **JWT** - JSON Web Token authentication
+- **bcryptjs** - Password hashing
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18+ and npm
+- MongoDB database (local or MongoDB Atlas)
+
+### Installation
+
+1. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+2. **Set up environment variables**
+   ```bash
+   cp .env.example .env.local
+   ```
+   
+   Edit `.env.local` with your configuration:
+   ```env
+   MONGODB_URI=mongodb://localhost:27017/econnect
+   JWT_SECRET=your-super-secret-jwt-key
+   NEXTAUTH_URL=http://localhost:3000
+   NEXTAUTH_SECRET=your-nextauth-secret
+   NODE_ENV=development
+   ```
+
+3. **Start the development server**
+   ```bash
+   npm run dev
+   ```
+
+4. **Open your browser**
+   Navigate to [http://localhost:3000](http://localhost:3000)
 - **Course Creation**: Comprehensive course management tools
 - **Student Management**: Track and manage student progress
 - **Content Upload**: Easy content creation and sharing
