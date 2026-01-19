@@ -253,7 +253,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Your Name**
 - GitHub: [@ious-engineer](https://github.com/ious-engineer)
-- Portfolio: [theious.engineer](https://ious-engineer.github.io/portfolio)
+- Portfolio: [theious.engineer](https://ious-engineer.github.io/-/)
 
 ## 🙏 Acknowledgments
 
