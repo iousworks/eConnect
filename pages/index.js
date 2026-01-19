@@ -160,9 +160,6 @@ export default function Home() {
                 <a href="#contact" className="text-gray-700 hover:text-primary-500 px-3 py-2 rounded-md text-sm font-medium transition-colors">
                   Contact
                 </a>
-                <a href="/student" className="text-gray-700 hover:text-primary-500 px-3 py-2 rounded-md text-sm font-medium transition-colors">
-                  Student Portal
-                </a>
                 <button
                   onClick={() => setIsAuthModalOpen(true)}
                   className="btn btn-primary ml-4"
@@ -207,9 +204,6 @@ export default function Home() {
               </a>
               <a href="#contact" className="text-gray-700 hover:text-primary-500 block px-3 py-2 rounded-md text-base font-medium">
                 Contact
-              </a>
-              <a href="/student" className="text-gray-700 hover:text-primary-500 block px-3 py-2 rounded-md text-base font-medium">
-                Student Portal
               </a>
               <button
                 onClick={() => {
