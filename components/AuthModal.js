@@ -40,14 +40,28 @@ export default function AuthModal({ onClose }) {
     setMessage('')
 
     try {
-      const endpoint = isLogin ? buildApiUrl('/auth/login') : buildApiUrl('/auth/register')
-      const response = await fetch(endpoint, {
+      // Try production endpoints first, fall back to dev endpoints if they fail
+      let endpoint = isLogin ? buildApiUrl('/auth/login') : buildApiUrl('/auth/register')
+      let response = await fetch(endpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData)
       })
+
+      // If production endpoint fails, try development endpoint
+      if (!response.ok && response.status === 500) {
+        console.log('Production endpoint failed, trying development endpoint...')
+        endpoint = isLogin ? buildApiUrl('/auth/login-dev') : buildApiUrl('/auth/register-dev')
+        response = await fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData)
+        })
+      }
 
       const data = await response.json()
 

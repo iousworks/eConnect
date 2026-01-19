@@ -33,10 +33,27 @@ const endpoints = [
     color: 'text-blue-500',
     bgColor: 'bg-blue-50',
     body: {
-      email: 'test@example.com',
+      email: 'newuser@example.com',
       password: 'password123',
       firstName: 'John',
       lastName: 'Doe',
+      role: 'student'
+    }
+  },
+  {
+    id: 'register-dev',
+    name: 'User Registration (Dev)',
+    method: 'POST', 
+    path: '/api/auth/register-dev',
+    description: 'Register a new user (Development mode)',
+    icon: Shield,
+    color: 'text-orange-500',
+    bgColor: 'bg-orange-50',
+    body: {
+      email: 'devuser@example.com',
+      password: 'password123',
+      firstName: 'Dev',
+      lastName: 'User',
       role: 'student'
     }
   },
@@ -55,6 +72,20 @@ const endpoints = [
     }
   },
   {
+    id: 'login-dev',
+    name: 'User Login (Dev)',
+    method: 'POST',
+    path: '/api/auth/login-dev',
+    description: 'Authenticate a user (Development mode)',
+    icon: Shield,
+    color: 'text-pink-500',
+    bgColor: 'bg-pink-50',
+    body: {
+      email: 'test@example.com',
+      password: 'password123'
+    }
+  },
+  {
     id: 'users',
     name: 'Get Users',
     method: 'GET',
@@ -64,6 +95,16 @@ const endpoints = [
     color: 'text-orange-500',
     bgColor: 'bg-orange-50',
     requiresAuth: true
+  },
+  {
+    id: 'users-dev',
+    name: 'Get Users (Dev)',
+    method: 'GET',
+    path: '/api/users-dev',
+    description: 'Fetch all users (Development mode)',
+    icon: Database,
+    color: 'text-teal-500',
+    bgColor: 'bg-teal-50'
   }
 ]
 
