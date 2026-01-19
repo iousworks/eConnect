@@ -1,3 +1,5 @@
+import userStore from '../../../lib/userStore'
+
 // Simple JWT generation for development
 function generateToken(userId) {
   const payload = {
@@ -13,10 +15,6 @@ function sanitizeString(str) {
   if (!str || typeof str !== 'string') return ''
   return str.trim().replace(/[<>]/g, '')
 }
-
-// In-memory storage for development (data will be lost on server restart)
-let users = []
-let userIdCounter = 1
 
 export default async function handler(req, res) {
   // Only allow POST requests
@@ -65,8 +63,17 @@ export default async function handler(req, res) {
       })
     }
 
+    // Role validation
+    const validRoles = ['student', 'educator', 'admin']
+    if (!validRoles.includes(sanitizedData.role)) {
+      return res.status(400).json({
+        error: 'Validation failed',
+        message: 'Invalid role. Must be student, educator, or admin'
+      })
+    }
+
     // Check if user already exists
-    const existingUser = users.find(user => user.email === sanitizedData.email)
+    const existingUser = userStore.findByEmail(sanitizedData.email)
     if (existingUser) {
       return res.status(409).json({
         error: 'Registration failed',
@@ -75,20 +82,16 @@ export default async function handler(req, res) {
     }
 
     // Create new user
-    const user = {
-      _id: userIdCounter++,
+    const userData = {
       email: sanitizedData.email,
+      password: sanitizedData.password, // In production, this should be hashed
       firstName: sanitizedData.firstName,
       lastName: sanitizedData.lastName,
       fullName: `${sanitizedData.firstName} ${sanitizedData.lastName}`,
-      role: sanitizedData.role,
-      isActive: true,
-      createdAt: new Date(),
-      lastLogin: null
+      role: sanitizedData.role
     }
 
-    // Add to in-memory storage
-    users.push(user)
+    const user = userStore.addUser(userData)
 
     // Generate JWT token
     const token = generateToken(user._id)
@@ -96,7 +99,7 @@ export default async function handler(req, res) {
     // Return success response
     return res.status(201).json({
       success: true,
-      message: 'Account created successfully! (Development mode - data will be lost on server restart)',
+      message: `Account created successfully as ${sanitizedData.role}! (Development mode)`,
       user: {
         id: user._id,
         email: user.email,

@@ -1,3 +1,5 @@
+import userStore from '../../../lib/userStore'
+
 // Simple JWT generation for development
 function generateToken(userId) {
   const payload = {
@@ -12,26 +14,6 @@ function generateToken(userId) {
 function sanitizeString(str) {
   if (!str || typeof str !== 'string') return ''
   return str.trim().replace(/[<>]/g, '')
-}
-
-// Import the same in-memory storage (in a real app, this would be in a shared module)
-// For development purposes, we'll recreate a simple user store
-let users = []
-
-// Add a default test user
-if (users.length === 0) {
-  users.push({
-    _id: 999,
-    email: 'test@example.com',
-    firstName: 'Test',
-    lastName: 'User',
-    fullName: 'Test User',
-    role: 'student',
-    password: 'password123', // In real app, this would be hashed
-    isActive: true,
-    createdAt: new Date(),
-    lastLogin: null
-  })
 }
 
 export default async function handler(req, res) {
@@ -58,7 +40,7 @@ export default async function handler(req, res) {
     }
 
     // Find user
-    const user = users.find(u => u.email === sanitizedEmail)
+    const user = userStore.findByEmail(sanitizedEmail)
     if (!user) {
       return res.status(401).json({
         error: 'Authentication failed',
@@ -75,7 +57,7 @@ export default async function handler(req, res) {
     }
 
     // Update last login
-    user.lastLogin = new Date()
+    userStore.updateUser(user._id, { lastLogin: new Date() })
 
     // Generate JWT token
     const token = generateToken(user._id)
@@ -83,7 +65,7 @@ export default async function handler(req, res) {
     // Return success response
     return res.status(200).json({
       success: true,
-      message: 'Login successful!',
+      message: `Login successful as ${user.role}!`,
       user: {
         id: user._id,
         email: user.email,
@@ -92,7 +74,7 @@ export default async function handler(req, res) {
         fullName: user.fullName,
         role: user.role,
         isActive: user.isActive,
-        lastLogin: user.lastLogin
+        lastLogin: new Date()
       },
       token,
       developmentMode: true
