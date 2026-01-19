@@ -1,1 +1,44 @@
-import { getCanonicalUrl } from '../lib/urls'\n\nexport default function Sitemap() {\n  // getServerSideProps will handle the generation\n  return null\n}\n\nexport async function getServerSideProps({ res }) {\n  const baseUrl = process.env.NEXTAUTH_URL || 'https://econnect.vercel.app'\n  \n  // Static pages\n  const staticPages = [\n    '',\n    '/dashboard',\n  ]\n  \n  // Generate sitemap XML\n  const sitemap = `<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n  ${staticPages\n    .map((page) => {\n      const path = page === '' ? '' : page\n      const cleanUrl = getCanonicalUrl(path, baseUrl)\n      \n      return `\n    <url>\n      <loc>${cleanUrl}</loc>\n      <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>\n      <changefreq>daily</changefreq>\n      <priority>${page === '' ? '1.0' : '0.8'}</priority>\n    </url>`\n    })\n    .join('')}\n</urlset>`\n\n  res.setHeader('Content-Type', 'text/xml')\n  res.setHeader('Cache-Control', 'public, max-age=86400, stale-while-revalidate=43200')\n  res.write(sitemap)\n  res.end()\n\n  return {\n    props: {},\n  }\n}
+import { getCanonicalUrl } from '../lib/urls'
+
+export default function Sitemap() {
+  // getServerSideProps will handle the generation
+  return null
+}
+
+export async function getServerSideProps({ res }) {
+  const baseUrl = process.env.NEXTAUTH_URL || 'https://econnect.vercel.app'
+  
+  // Static pages
+  const staticPages = [
+    '',
+    '/dashboard',
+  ]
+  
+  // Generate sitemap XML
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  ${staticPages
+    .map((page) => {
+      const path = page === '' ? '' : page
+      const cleanUrl = getCanonicalUrl(path, baseUrl)
+      
+      return `
+    <url>
+      <loc>${cleanUrl}</loc>
+      <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+      <changefreq>daily</changefreq>
+      <priority>${page === '' ? '1.0' : '0.8'}</priority>
+    </url>`
+    })
+    .join('')}
+</urlset>`
+
+  res.setHeader('Content-Type', 'text/xml')
+  res.setHeader('Cache-Control', 'public, max-age=86400, stale-while-revalidate=43200')
+  res.write(sitemap)
+  res.end()
+
+  return {
+    props: {},
+  }
+}

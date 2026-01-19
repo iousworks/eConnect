@@ -420,3 +420,4 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 >>>>>>> da6e81e93f94e1191162f4a35373e7c07bef65cc
+.vercel
