@@ -16,7 +16,7 @@ import {
   Settings,
   Send,
   Database,
-  Home
+  Home as HomeIcon
 } from 'lucide-react'
 import AuthModal from '../components/AuthModal'
 import ApiTester from '../components/ApiTester'
@@ -28,7 +28,7 @@ export default function Home() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const sidebarItems = [
-    { icon: Home, label: 'Dashboard', active: false },
+    { icon: HomeIcon, label: 'Dashboard', active: false },
     { icon: BookOpen, label: 'Courses', active: true },
     { icon: ClipboardList, label: 'Course Review', active: false },
     { icon: Settings, label: 'Functions', active: false },
