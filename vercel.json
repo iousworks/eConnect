@@ -1,31 +1,12 @@
 {
   "name": "econnect",
-  "description": "Deploy eConnect to Vercel",
-  "build": {
-    "env": {
-      "ENABLE_EXPERIMENTAL_COREPACK": "1"
+  "version": 2,
+  "functions": {
+    "pages/api/**/*.js": {
+      "runtime": "@vercel/node"
     }
   },
-  "buildCommand": "npm run build",
-  "devCommand": "npm run dev",
-  "installCommand": "npm install",
-  "framework": "nextjs",
   "env": {
-    "MONGODB_URI": {
-      "description": "MongoDB connection string",
-      "value": "mongodb://localhost:27017/econnect"
-    },
-    "JWT_SECRET": {
-      "description": "JWT secret for token signing",
-      "value": ""
-    },
-    "NEXTAUTH_URL": {
-      "description": "NextAuth URL",
-      "value": "https://your-domain.vercel.app"
-    },
-    "NEXTAUTH_SECRET": {
-      "description": "NextAuth secret",
-      "value": ""
-    }
+    "NODE_ENV": "production"
   }
-}
+} 
