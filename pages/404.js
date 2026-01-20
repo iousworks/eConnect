@@ -2,6 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Home, Search, ArrowLeft } from 'lucide-react'
+import Footer from '../components/Footer'
 import { getCanonicalUrl, URLS } from '../lib/urls'
 
 export default function Custom404() {
@@ -90,6 +91,8 @@ export default function Custom404() {
           </motion.div>
         </div>
       </div>
+
+      <Footer />
     </>
   )
 }

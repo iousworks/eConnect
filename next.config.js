@@ -42,9 +42,26 @@ const nextConfig = {
         destination: '/dashboard',
         permanent: true,
       },
-      // Remove trailing slashes for consistency
+      // Remove trailing slashes for consistency (except for root)
       {
         source: '/((?!api/).*?)/$',
+        destination: '/$1',
+        permanent: true,
+      },
+      // Clean about page URLs
+      {
+        source: '/about.html',
+        destination: '/about',
+        permanent: true,
+      },
+      {
+        source: '/about.php',
+        destination: '/about',
+        permanent: true,
+      },
+      // Handle common file extensions
+      {
+        source: '/(.*)\.htm$',
         destination: '/$1',
         permanent: true,
       },
@@ -79,6 +96,16 @@ const nextConfig = {
       {
         source: '/robots.txt',
         destination: '/api/robots',
+      },
+      // Clean profile URLs (if you add user profiles later)
+      {
+        source: '/profile/:username',
+        destination: '/user/:username',
+      },
+      // Clean course URLs (for future course features)
+      {
+        source: '/course/:slug',
+        destination: '/courses/:slug',
       },
     ]
   },

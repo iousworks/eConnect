@@ -16,6 +16,7 @@ import {
   TrendingUp,
   Clock
 } from 'lucide-react'
+import Footer from '../components/Footer'
 import { getCanonicalUrl, navigateToCleanUrl, URLS } from '../lib/urls'
 
 export default function Dashboard() {
@@ -403,6 +404,8 @@ export default function Dashboard() {
           </motion.div>
         </div>
       </div>
+
+      <Footer />
     </>
   )
 }

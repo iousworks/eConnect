@@ -14,6 +14,7 @@ import {
 } from 'lucide-react'
 import AuthModal from '../components/AuthModal'
 import ApiTester from '../components/ApiTester'
+import Footer from '../components/Footer'
 import { getCanonicalUrl, URLS } from '../lib/urls'
 
 export default function Home() {
@@ -154,7 +155,7 @@ export default function Home() {
                 <a href="#features" className="text-gray-700 hover:text-primary-500 px-3 py-2 rounded-md text-sm font-medium transition-colors">
                   Features
                 </a>
-                <a href="#about" className="text-gray-700 hover:text-primary-500 px-3 py-2 rounded-md text-sm font-medium transition-colors">
+                <a href="/about" className="text-gray-700 hover:text-primary-500 px-3 py-2 rounded-md text-sm font-medium transition-colors">
                   About
                 </a>
                 <a href="#contact" className="text-gray-700 hover:text-primary-500 px-3 py-2 rounded-md text-sm font-medium transition-colors">
@@ -199,7 +200,7 @@ export default function Home() {
               <a href="#features" className="text-gray-700 hover:text-primary-500 block px-3 py-2 rounded-md text-base font-medium">
                 Features
               </a>
-              <a href="#about" className="text-gray-700 hover:text-primary-500 block px-3 py-2 rounded-md text-base font-medium">
+              <a href="/about" className="text-gray-700 hover:text-primary-500 block px-3 py-2 rounded-md text-base font-medium">
                 About
               </a>
               <a href="#contact" className="text-gray-700 hover:text-primary-500 block px-3 py-2 rounded-md text-base font-medium">
@@ -328,6 +329,8 @@ export default function Home() {
           </div>
         </section>
       </main>
+
+      <Footer />
 
       {/* Auth Modal */}
       {isAuthModalOpen && (
